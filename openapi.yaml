@@ -1,0 +1,145 @@
+openapi: 3.0.0
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/SERG123E/DemoForumAPI/1.0.0
+info:
+  description: >-
+    Demo API allowing forum moderators to get a list of users and comments
+    authored by those users
+  version: 1.0.0
+  title: Demo Forum API
+  contact:
+    email: serg123e@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+paths:
+  /users:
+    get:
+      summary: List of users
+      description: Returns a list of users
+      operationId: list_users
+      parameters:
+        - in: query
+          name: search
+          description: pass an optional search string for looking up a user name
+          required: false
+          schema:
+            type: string
+        - $ref: '#/components/parameters/OffsetParam'
+        - $ref: '#/components/parameters/LimitParam'
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+      security:
+        - api_key: []
+  /users/{user_id}:
+    get:
+      summary: Get a single user by ID
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+      responses:
+        '200':
+          description: A user object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+  /users/{user_id}/comments:
+    get:
+      summary: List of comments authored by a specific user
+      description: Returns a list of comments authored by the user
+      operationId: list_user_comments
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+        - $ref: '#/components/parameters/OffsetParam'
+        - $ref: '#/components/parameters/LimitParam'
+      responses:
+        '200':
+          description: Array of comments authored by specific user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '404':
+          description: User not found or no comments available
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 123
+        username:
+          type: string
+          example: the_user
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Smith
+        email:
+          type: string
+          example: john@email.com
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 12345
+        user_id:
+          type: integer
+          format: int64
+          example: 123
+        body:
+          type: string
+          example: Hello fellow programmers
+        created_at:
+          type: string
+          format: date-time
+          example: '2024-11-05T12:00:00Z'
+  parameters:
+    OffsetParam:
+      in: query
+      name: offset
+      description: Number of records to skip for pagination
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+    LimitParam:
+      in: query
+      name: limit
+      description: Maximum number of records to return
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 500
+    UserIdParam:
+      name: user_id
+      in: path
+      required: true
+      description: Unique identifier of the user
+      schema:
+        type: integer
+        example: 123
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
