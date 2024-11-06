@@ -5,7 +5,7 @@ Using this API, moderators can retrieve a list of users and view comments author
 
 ## Repository Structure
 
-[**/docs:**](/docs) This directory contains the HTML documentation generated from the OpenAPI specification
+[**/docs:**](/docs) This directory contains the Swagger UI, the tool to to visualize and interact with the API’s resources.
 
 [**openapi.yaml:**](openapi.yaml) This file is the OpenAPI 3.0 specification itself. 
 It defines the API endpoints, request/response formats, authentication requirements, and other essential details for using the Demo API.
