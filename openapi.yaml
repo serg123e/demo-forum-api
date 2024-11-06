@@ -109,6 +109,10 @@ components:
           type: integer
           format: int64
           example: 123
+        thread_id:
+          type: integer
+          format: int64
+          example: 321
         body:
           type: string
           example: Hello fellow programmers
