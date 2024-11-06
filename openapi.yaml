@@ -53,6 +53,8 @@ paths:
                 $ref: '#/components/schemas/User'
         '404':
           description: User not found
+      security:
+        - api_key: []
   /users/{user_id}/comments:
     get:
       summary: List of comments authored by a specific user
@@ -73,6 +75,8 @@ paths:
                   $ref: '#/components/schemas/Comment'
         '404':
           description: User not found or no comments available
+      security:
+        - api_key: []
 components:
   schemas:
     User:
